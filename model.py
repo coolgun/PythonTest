@@ -1,13 +1,14 @@
 import sys
-from PyQt5.QtCore import QSortFilterProxyModel,QFile,QTextStream,QDir,QStringListModel ,QDirIterator,QFileInfo,QModelIndex
+from PyQt5.QtCore import QSortFilterProxyModel,QFile,QTextStream,QDir,QStringListModel ,QDirIterator,QFileInfo,QModelIndex,Qt
 from PyQt5.QtWidgets import QFileIconProvider 
 
+iconProvider = QFileIconProvider()# siglton
 
 class SimpleFileSystemModel(QStringListModel ):
 
     def __init__(self,parent,path):
         QStringListModel .__init__(self,parent)
-        self.iconProvider = QFileIconProvider()
+        
         self.setRootPath(path)
     
     
@@ -19,14 +20,15 @@ class SimpleFileSystemModel(QStringListModel ):
         self.setStringList(lst)        
 
     def fileInfo(self, index):
-        inf=QFileInfo(QStringListModel.data(self, index, 0))
+        inf=QFileInfo(QStringListModel.data(self, index, Qt.DisplayRole))
         return inf
         
     def data(self, index, role):
-        if role==0:
+        
+        if role==Qt.DisplayRole:
             return self.fileInfo(index).fileName()
-        elif role==1:
-            return self.iconProvider.icon(self.fileInfo(index))
+        elif role==Qt.DecorationRole:
+            return iconProvider.icon(self.fileInfo(index))
         return QStringListModel.data(self, index, role)
 
 

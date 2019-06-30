@@ -3,7 +3,7 @@ import os
 
 
 from PyQt5.QtWidgets import QApplication, QFileSystemModel, QListView,QWidget,QVBoxLayout,QLineEdit,QPushButton,QFileDialog
-from PyQt5.QtCore  import QRegExp
+from PyQt5.QtCore  import QRegExp,Qt
 from model import FilterdFileSystemModel
 from widgets import FilterLine
 
@@ -37,7 +37,7 @@ class Widget(QWidget):
 
 
     def textFilterChanged(self):
-        regExp =QRegExp(self.line.text(),0,self.line.patternSyntax())
+        regExp =QRegExp(self.line.text(),Qt.CaseInsensitive,self.line.patternSyntax())
         self.proxyModel.setFilterRegExp(regExp)
         
 
